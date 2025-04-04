@@ -40,4 +40,10 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 end
 
+gem 'countries', '~> 7.0'
 
+gem "devise", "~> 4.9"
+
+gem "devise_token_auth", "~> 1.2"
+
+gem "rack-cors"
