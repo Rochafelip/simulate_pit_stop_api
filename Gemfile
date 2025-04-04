@@ -47,3 +47,5 @@ gem "devise", "~> 4.9"
 gem "devise_token_auth", "~> 1.2"
 
 gem "rack-cors"
+
+gem 'pundit'

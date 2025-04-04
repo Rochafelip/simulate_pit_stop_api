@@ -1,9 +1,16 @@
 class User < ApplicationRecord
   include DeviseTokenAuth::Concerns::User
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
   has_many :races, dependent: :destroy
+
+  # Devise e Devise Token Auth aqui
+  enum role: { normal: 0, admin: 1 }
+
+  # Método para verificar se o usuário é admin
+  def admin?
+    self.admin
+  end
 end

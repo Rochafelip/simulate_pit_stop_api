@@ -1,8 +1,6 @@
-user = User.find_or_initialize_by(email: 'email@example.com')
-user.name = 'Comum'
-user.password = 'password123'
-user.password_confirmation = 'password123'
-user.save
+Track.delete_all
+Car.delete_all
+User.delete_all
 
 Car.create!([
   { model: "Porsche 911 GT3 R", power: 520, weight: 1220, fuel_capacity: 120, category: "GT3" },
@@ -20,4 +18,12 @@ Track.create!([
   { name: "Bahrain International Circuit", distance: 5.412, number_of_curves: 15, country: "Bahrain", elevation_track: 3 },
   { name: "Mount Panorama Circuit - Bathurst", distance: 6.213, number_of_curves: 23, country: "Australia", elevation_track: 174 },
   { name: "Circuito de Mônaco", distance: 3.337, number_of_curves: 19, country: "Monaco", elevation_track: 42 }
+])
+
+User.create!([
+  { email: 'admin@example.com', name: 'Admin', password: 'password123', password_confirmation: 'password123', admin: true },
+  { email: 'user1@example.com', name: 'Usuário Comum 1', password: 'password123', password_confirmation: 'password123', admin: false },
+  { email: 'user2@example.com', name: 'Usuário Comum 2', password: 'password123', password_confirmation: 'password123', admin: false },
+  { email: 'user3@example.com', name: 'Usuário Comum 3', password: 'password123', password_confirmation: 'password123', admin: false },
+  { email: 'user4@example.com', name: 'Usuário Comum 4', password: 'password123', password_confirmation: 'password123', admin: false }
 ])
