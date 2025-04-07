@@ -169,6 +169,8 @@ GEM
       stringio
     puma (6.6.0)
       nio4r (~> 2.0)
+    pundit (2.5.0)
+      activesupport (>= 3.0.0)
     racc (1.8.1)
     rack (3.1.12)
     rack-cors (2.0.2)
@@ -287,6 +289,7 @@ DEPENDENCIES
   devise_token_auth (~> 1.2)
   pg (~> 1.1)
   puma (>= 5.0)
+  pundit
   rack-cors
   rails (~> 7.2.2, >= 7.2.2.1)
   rubocop-rails-omakase
