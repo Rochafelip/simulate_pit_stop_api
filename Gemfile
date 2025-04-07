@@ -49,3 +49,5 @@ gem "devise_token_auth", "~> 1.2"
 gem "rack-cors"
 
 gem 'pundit'
+
+gem 'active_model_serializers', '~> 0.10.0'

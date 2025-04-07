@@ -6,14 +6,14 @@ class Api::V1::CarsController < ApplicationController
   # GET /cars (todos veem)
   def index
     @cars = policy_scope(Car)
-    render json: @cars
+    render json: @cars, each_serializer: CarSerializer
   end
 
   # GET /cars/1 (todos veem)
   def show
     @car = Car.find(params[:id])
     authorize @car
-    render json: @car
+    render json: @car, serializer: CarSerializer
   end
 
   # POST /cars (qualquer um pode criar)
@@ -23,7 +23,7 @@ class Api::V1::CarsController < ApplicationController
     authorize @car
 
     if @car.save
-      render json: @car, status: :created
+      render json: @car, serializer: CarSerializer, status: :created
     else
       render json: @car.errors, status: :unprocessable_entity
     end
@@ -34,7 +34,7 @@ class Api::V1::CarsController < ApplicationController
     @car = Car.find(params[:id])
     authorize @car
     if @car.update(car_params)
-      render json: @car
+      render json: @car, serializer: CarSerializer
     else
       render json: @car.errors, status: :unprocessable_entity
     end
@@ -49,6 +49,7 @@ class Api::V1::CarsController < ApplicationController
   end
 
   private
+
   def car_params
     params.require(:car).permit(:model, :power, :weight, :fuel_capacity, :category)
   end
