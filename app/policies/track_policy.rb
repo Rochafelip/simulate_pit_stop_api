@@ -22,7 +22,7 @@ class TrackPolicy < ApplicationPolicy
   # Escopo para filtrar registros
   class Scope < Scope
     def resolve
-      scope.where(user: user) # Mostra apenas tracks do usuário
+      scope.all # Mostra todas as pistas
     end
   end
 end

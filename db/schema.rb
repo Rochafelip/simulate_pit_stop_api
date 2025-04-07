@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_04_170917) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_07_213519) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -41,7 +41,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_04_170917) do
 
   create_table "tracks", force: :cascade do |t|
     t.string "name"
-    t.integer "distance"
+    t.float "distance"
     t.integer "number_of_curves"
     t.string "country"
     t.integer "elevation_track"

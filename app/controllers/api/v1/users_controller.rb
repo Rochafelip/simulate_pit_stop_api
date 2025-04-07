@@ -6,12 +6,12 @@ class Api::V1::UsersController < ApplicationController
   # GET /api/v1/users
   def index
     @users = policy_scope(User)
-    render json: @users, except: [:tokens, :created_at, :updated_at]
+    render json: @users, each_serializer: UserSerializer, except: [:tokens, :created_at, :updated_at]
   end
 
   # GET /api/v1/users/me
   def me
-    render json: current_user, serializer: UserProfileSerializer # Serializer customizado
+    render json: current_user, serializer: UserProfileSerializer
   end
 
   # PATCH /api/v1/users/me
@@ -28,7 +28,7 @@ class Api::V1::UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     authorize @user
-    render json: @user
+    render json: @user, serializer: UserSerializer
   end
 
   # DELETE /api/v1/users/:id (apenas admin)

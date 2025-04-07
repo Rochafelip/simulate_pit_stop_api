@@ -1,7 +1,6 @@
 class Track < ApplicationRecord
     VALID_COUNTRIES = ISO3166::Country.all.map { |country| country.translations['en'] } + ["Monaco"]
     has_many :races, dependent: :nullify
-
     # Validações de presença
     validates :name, :distance, :number_of_curves, :country, :elevation_track, presence: true
 
