@@ -10,16 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_07_213519) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_08_153545) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "cars", force: :cascade do |t|
-    t.string "model"
-    t.integer "power"
-    t.integer "weight"
-    t.integer "fuel_capacity"
-    t.string "category"
+    t.string "model", null: false
+    t.integer "power", null: false
+    t.integer "weight", null: false
+    t.integer "fuel_capacity", null: false
+    t.string "category", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -28,23 +28,29 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_07_213519) do
     t.bigint "car_id", null: false
     t.bigint "track_id", null: false
     t.integer "total_laps"
-    t.float "fuel_consumption_per_lap"
-    t.float "average_lap_time"
+    t.float "fuel_consumption_per_lap", null: false
+    t.float "average_lap_time", null: false
     t.float "total_fuel_needed"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.string "car_name"
+    t.string "car_category"
+    t.string "track_name"
+    t.integer "race_time_minutes", null: false
+    t.boolean "mandatory_pit_stop", default: false
+    t.integer "planned_pit_stops", null: false
     t.index ["car_id"], name: "index_races_on_car_id"
     t.index ["track_id"], name: "index_races_on_track_id"
     t.index ["user_id"], name: "index_races_on_user_id"
   end
 
   create_table "tracks", force: :cascade do |t|
-    t.string "name"
-    t.float "distance"
-    t.integer "number_of_curves"
-    t.string "country"
-    t.integer "elevation_track"
+    t.string "name", null: false
+    t.float "distance", null: false
+    t.integer "number_of_curves", null: false
+    t.string "country", null: false
+    t.integer "elevation_track", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

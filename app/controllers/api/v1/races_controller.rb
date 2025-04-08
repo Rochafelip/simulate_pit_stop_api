@@ -1,6 +1,6 @@
 class Api::V1::RacesController < ApplicationController
-  before_action :authenticate_user!, only: [:update, :destroy] # Protege as ações de update e destroy
-  after_action :verify_authorized, except: [:index, :show, :create]
+  before_action :authenticate_user!
+  after_action :verify_authorized, except: [ :index, :show, :create ]
   after_action :verify_policy_scoped, only: :index
 
   # GET /races (apenas admin pode ver todas, usuários veem apenas suas próprias races)
@@ -19,8 +19,9 @@ class Api::V1::RacesController < ApplicationController
   # POST /races (qualquer usuário logado pode criar uma race)
   def create
     @race = Race.new(race_params)
-    @race.user = current_user # Associa a race ao usuário logado
-    authorize @race  # Autoriza a criação da race
+    @race.user = current_user
+
+    @race.total_fuel_needed = @race.total_laps * @race.fuel_consumption_per_lap
 
     if @race.save
       render json: @race, status: :created
@@ -50,7 +51,11 @@ class Api::V1::RacesController < ApplicationController
 
   private
 
-  def race_params
-    params.require(:race).permit(:name, :start_time, :location)
-  end
+  params.require(:race).permit(
+    :car_id, :car_name, :car_category,
+    :track_id, :track_name,
+    :total_laps, :race_time_minutes,
+    :fuel_consumption_per_lap, :average_lap_time,
+    :total_fuel_needed, :mandatory_pit_stop, :planned_pit_stops
+  )
 end
