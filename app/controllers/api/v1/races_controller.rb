@@ -1,61 +1,90 @@
-class Api::V1::RacesController < ApplicationController
-  before_action :authenticate_user!
-  after_action :verify_authorized, except: [ :index, :show, :create ]
-  after_action :verify_policy_scoped, only: :index
+module Api::V1
+  class RacesController < ApplicationController
+    before_action :authenticate_user!
+    after_action :verify_authorized, except: [ :index, :show ]
+    after_action :verify_policy_scoped, only: :index
 
-  # GET /races (apenas admin pode ver todas, usuários veem apenas suas próprias races)
-  def index
-    @races = policy_scope(Race)  # A política de escopo limita a visualização da lista
-    render json: @races
-  end
+    def index
+      @races = policy_scope(Race)
+      render json: @race, serializer: Api::V1::RaceSerializer
+    end
 
-  # GET /races/:id (usuário pode ver apenas sua própria race, admin pode ver qualquer uma)
-  def show
-    @race = Race.find(params[:id])
-    authorize @race  # Autoriza o acesso à race
-    render json: @race
-  end
+    def show
+      @race = Race.find(params[:id])
+      authorize @race
+      render json: @race, serializer: Api::V1::RaceSerializer
+    end
 
-  # POST /races (qualquer usuário logado pode criar uma race)
-  def create
-    @race = Race.new(race_params)
-    @race.user = current_user
+    def create
+      # Cria a corrida primeiro (para autorização)
+      @race = Race.new(race_params.merge(user_id: current_user.id))
+      authorize @race
 
-    @race.total_fuel_needed = @race.total_laps * @race.fuel_consumption_per_lap
+      # Busca car e track
+      car = Car.find_by(id: race_params[:car_id])
+      track = Track.find_by(id: race_params[:track_id])
 
-    if @race.save
-      render json: @race, status: :created
-    else
-      render json: @race.errors, status: :unprocessable_entity
+      # Atribui car e track à corrida (ou adiciona erros)
+      if car && track
+        @race.car = car
+        @race.track = track
+      else
+        @race.errors.add(:base, "Carro ou pista não encontrados")
+        return render json: { errors: @race.errors.full_messages }, status: :unprocessable_entity
+      end
+
+      # Cálculos e validações
+      calculator = RaceCalculator.new(car, @race)
+      @race.total_fuel_needed = calculator.total_fuel_needed
+
+      unless calculator.pit_stops_sufficient?
+        @race.errors.add(:planned_pit_stops, "Pit stops insuficientes (mínimo: #{calculator.minimum_pit_stops})")
+      end
+
+      calculator.validate_mandatory_pit_stops(@race)
+
+      if @race.save
+        render json: @race, serializer: Api::V1::RaceSerializer, status: :created
+      else
+        render json: { errors: @race.errors.full_messages }, status: :unprocessable_entity
+      end
+    end
+
+    def update
+      @race = Race.find(params[:id])
+      authorize @race
+
+      if @race.update(race_params)
+        render json: @race, serializer: Api::V1::RaceSerializer
+      else
+        render json: { errors: @race.errors.full_messages }, status: :unprocessable_entity
+      end
+    end
+
+    def destroy
+      @race = Race.find(params[:id])
+      authorize @race
+      @race.destroy
+      head :no_content
+    end
+
+    private
+
+    def race_params
+      params.require(:race).permit(
+        :car_id,
+        :track_id,
+        :total_laps,
+        :fuel_consumption_per_lap,
+        :average_lap_time,
+        :race_time_minutes,
+        :mandatory_pit_stop,
+        :planned_pit_stops
+      )
+    end
+
+    def render_not_found(message)
+      render json: { error: message }, status: :not_found
     end
   end
-
-  # PATCH/PUT /races/:id (apenas dono ou admin pode atualizar)
-  def update
-    @race = Race.find(params[:id])
-    authorize @race  # Autoriza a atualização da race
-    if @race.update(race_params)
-      render json: @race
-    else
-      render json: @race.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /races/:id (apenas dono ou admin pode deletar)
-  def destroy
-    @race = Race.find(params[:id])
-    authorize @race  # Autoriza a exclusão da race
-    @race.destroy
-    head :no_content
-  end
-
-  private
-
-  params.require(:race).permit(
-    :car_id, :car_name, :car_category,
-    :track_id, :track_name,
-    :total_laps, :race_time_minutes,
-    :fuel_consumption_per_lap, :average_lap_time,
-    :total_fuel_needed, :mandatory_pit_stop, :planned_pit_stops
-  )
 end
