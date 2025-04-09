@@ -1,48 +1,48 @@
-class Api::V1::CarsController < ApplicationController
-  before_action :authenticate_user!, only: [:update, :destroy] # Apenas para ações protegidas
-  after_action :verify_authorized, except: [:index, :show, :create]
+module Api
+  module V1
+class CarsController < ApplicationController
+  before_action :authenticate_user!, only: [ :update, :destroy ]
+  before_action :set_car, only: [ :show, :update, :destroy ]
+  after_action :verify_authorized, except: [ :index, :show, :create ]
   after_action :verify_policy_scoped, only: :index
 
-  # GET /cars (todos veem)
+  # GET /cars
   def index
-    @cars = policy_scope(Car)
-    render json: @cars, each_serializer: CarSerializer
+    cars = policy_scope(Car)
+    render json: cars, each_serializer: CarSerializer, status: :ok
   end
 
-  # GET /cars/1 (todos veem)
+  # GET /cars/:id
   def show
-    @car = Car.find(params[:id])
     authorize @car
-    render json: @car, serializer: CarSerializer
+    render json: @car, serializer: CarSerializer, status: :ok
   end
 
-  # POST /cars (qualquer um pode criar)
+  # POST /cars
   def create
     @car = Car.new(car_params)
-    @car.user = current_user if user_signed_in? # Associa usuário se estiver logado
+    @car.user = current_user if user_signed_in?
     authorize @car
 
     if @car.save
       render json: @car, serializer: CarSerializer, status: :created
     else
-      render json: @car.errors, status: :unprocessable_entity
+      render json: { errors: @car.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /cars/1 (apenas dono/admin)
+  # PATCH/PUT /cars/:id
   def update
-    @car = Car.find(params[:id])
     authorize @car
     if @car.update(car_params)
-      render json: @car, serializer: CarSerializer
+      render json: @car, serializer: CarSerializer, status: :ok
     else
-      render json: @car.errors, status: :unprocessable_entity
+      render json: { errors: @car.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
-  # DELETE /cars/1 (apenas dono/admin)
+  # DELETE /cars/:id
   def destroy
-    @car = Car.find(params[:id])
     authorize @car
     @car.destroy
     head :no_content
@@ -50,7 +50,13 @@ class Api::V1::CarsController < ApplicationController
 
   private
 
+  def set_car
+    @car = Car.find(params[:id])
+  end
+
   def car_params
     params.require(:car).permit(:model, :power, :weight, :fuel_capacity, :category)
+  end
+end
   end
 end
