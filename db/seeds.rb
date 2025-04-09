@@ -1,3 +1,5 @@
+Car.destroy_all
+Track.destroy_all
 
 Car.create!([
   { model: "Porsche 911 GT3 R", power: 520, weight: 1220, fuel_capacity: 120, category: "GT3" },

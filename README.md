@@ -22,3 +22,6 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+user = User.find_by(email: 'feliperocha@email.com')
+user.confirm
