@@ -1,31 +1,108 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
-  hello: "Hello world"
+  devise:
+    sessions:
+      signed_in: "Successfully signed in."
+      signed_out: "Successfully signed out."
+      already_signed_out: "You are already signed out."
+      invalid: "Invalid email or password."
+      timeout: "Your session has expired. Please sign in again."
+
+    registrations:
+      signed_up: "Welcome! You have signed up successfully."
+      updated: "Your account has been updated successfully."
+      destroyed: "Your account has been successfully deleted."
+      already_exists: "Email has already been taken."
+
+    passwords:
+      send_instructions: "You will receive an email with instructions on how to reset your password."
+      updated: "Your password has been updated successfully."
+      update_not_allowed: "You are not allowed to change your password at this time."
+
+    confirmations:
+      send_instructions: "A confirmation email has been sent to you."
+      confirmed: "Your email address has been confirmed."
+      already_confirmed: "Your email address has already been confirmed."
+      expired: "Your confirmation token has expired."
+
+    failure:
+      invalid: "Invalid email or password."
+      locked: "Your account is locked."
+      expired: "Your account has expired."
+      not_found_in_database: "Invalid email or password."
+
+  users:
+    create:
+      success: "User created successfully."
+      failure: "Failed to create user."
+    update_profile:
+      success: "Profile updated successfully."
+      failure: "Failed to update profile."
+    destroy:
+      success: "User deleted successfully."
+      failure: "Failed to delete user."
+
+  login:
+    success: "Login successful!"
+    failure: "Invalid email or password."
+    already_signed_in: "You are already signed in."
+    logout: "You have logged out successfully."
+    remember_me: "Remember me"
+    forgot_password: "Forgot your password?"
+    sign_up: "Don't have an account? Sign up"
+    invalid_token: "The token is invalid or expired."
+    account_locked: "Your account is locked. Please contact support."
+    session_expired: "Your session has expired. Please log in again."
+
+  errors:
+    messages:
+      blank: "can't be blank"
+      invalid: "is invalid"
+      not_found: "not found"
+      taken: "has already been taken"
+      too_short: "is too short (minimum is %{count} characters)"
+      confirmation: "doesn't match confirmation"
+      invalid_value: "is not a valid value"
+      invalid_category: "is not a valid category"
+      unrealistic_power_to_weight_ratio: "Power-to-weight ratio is unrealistic (maximum 0.8 HP/kg)"
+      invalid_country: "is not a valid country"
+      duplicate_name: "has already been taken"
+
+    activerecord:
+      errors:
+        models:
+          user:
+            attributes:
+              email:
+                taken: "Email has already been taken."
+              password:
+                too_short: "Password is too short (minimum is %{count} characters)"
+                confirmation: "Password confirmation doesn't match"
+          car:
+            attributes:
+              model: *blank
+              power: *blank
+              weight: *blank
+              fuel_capacity: *blank
+              category: *blank
+          track:
+            attributes:
+              name: *blank
+              distance: *blank
+              number_of_curves: *blank
+              country: *blank
+              elevation_track: *blank
+          race:
+            attributes:
+              total_laps:
+                must_be_greater_than_zero: "Total laps must be greater than zero"
+              average_lap_time:
+                must_be_greater_than_zero: "Average lap time must be greater than zero"
+              race_time_minutes:
+                must_be_greater_than_zero: "Race time minutes must be greater than zero"
+              planned_pit_stops:
+                must_be_non_negative_integer: "Planned pit stops must be a non-negative integer"
+
+# Define common errors to avoid repetition
+common_errors:
+  blank: "can't be blank"
+  taken: "has already been taken"

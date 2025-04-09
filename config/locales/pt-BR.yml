@@ -1,0 +1,6 @@
+pt-BR:
+  hello: "Olá"
+  welcome: "Bem-vindo"
+  errors:
+    messages:
+      blank: "não pode ficar em branco"
