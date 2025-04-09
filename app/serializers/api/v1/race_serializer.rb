@@ -1,5 +1,6 @@
 # app/serializers/api/v1/race_serializer.rb
-module Api::V1
+module Api
+  module V1
   class RaceSerializer < ActiveModel::Serializer
     attributes :id,
                :car_name,
@@ -12,8 +13,8 @@ module Api::V1
                :fuel_consumption_per_lap,
                :total_laps,
                :total_fuel_needed,
-               :fuel_per_pit_stop,  # Novo campo calculado
-               :estimated_pit_time  # Novo campo calculado
+               :fuel_per_pit_stop,
+               :estimated_pit_time
 
     # Combustível por pit stop (calculado)
     def fuel_per_pit_stop
@@ -25,5 +26,6 @@ module Api::V1
     def estimated_pit_time
       object.planned_pit_stops * 30 # segundos
     end
+  end
   end
 end

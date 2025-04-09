@@ -1,4 +1,5 @@
-module Api::V1
+module Api
+  module V1
   class CarDetailSerializer < ActiveModel::Serializer
       attributes :id, :model, :power, :weight, :fuel_capacity, :category, :created_at, :updated_at
 
@@ -10,5 +11,6 @@ module Api::V1
       def updated_at
         object.updated_at.strftime("%d/%m/%Y %H:%M")
       end
+  end
   end
 end

@@ -6,13 +6,13 @@ module Api::V1
 
     def index
       @races = policy_scope(Race)
-      render json: @race, serializer: Api::V1::RaceSerializer
+      render json: @races, each_serializer: Api::V1::RaceSerializer
     end
 
     def show
       @race = Race.find(params[:id])
       authorize @race
-      render json: @race, serializer: Api::V1::RaceSerializer
+      render json: @races, each_serializer: Api::V1::RaceSerializer
     end
 
     def create
@@ -44,7 +44,7 @@ module Api::V1
       calculator.validate_mandatory_pit_stops(@race)
 
       if @race.save
-        render json: @race, serializer: Api::V1::RaceSerializer, status: :created
+        render json: @races, each_serializer: Api::V1::RaceSerializer, status: :created
       else
         render json: { errors: @race.errors.full_messages }, status: :unprocessable_entity
       end
@@ -55,7 +55,7 @@ module Api::V1
       authorize @race
 
       if @race.update(race_params)
-        render json: @race, serializer: Api::V1::RaceSerializer
+        render json: @races, each_serializer: Api::V1::RaceSerializer
       else
         render json: { errors: @race.errors.full_messages }, status: :unprocessable_entity
       end
