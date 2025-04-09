@@ -12,7 +12,10 @@ module SimulatePitStopApi
     config.load_defaults 7.2
 
     # Definir o idioma padrão para português (Brasil)
-    config.i18n.default_locale = :'en'
+    config.i18n.default_locale = :'pt-BR'
+
+    # Adicionar idiomas adicionais, caso necessário
+    config.i18n.available_locales = [:en, :'pt-BR']
 
     # Definir o fallback de idioma, caso uma tradução não seja encontrada
     config.i18n.fallbacks = true

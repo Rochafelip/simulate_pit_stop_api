@@ -61,11 +61,6 @@ en:
       taken: "has already been taken"
       too_short: "is too short (minimum is %{count} characters)"
       confirmation: "doesn't match confirmation"
-      invalid_value: "is not a valid value"
-      invalid_category: "is not a valid category"
-      unrealistic_power_to_weight_ratio: "Power-to-weight ratio is unrealistic (maximum 0.8 HP/kg)"
-      invalid_country: "is not a valid country"
-      duplicate_name: "has already been taken"
 
     activerecord:
       errors:
@@ -79,30 +74,46 @@ en:
                 confirmation: "Password confirmation doesn't match"
           car:
             attributes:
-              model: *blank
-              power: *blank
-              weight: *blank
-              fuel_capacity: *blank
-              category: *blank
-          track:
-            attributes:
-              name: *blank
-              distance: *blank
-              number_of_curves: *blank
-              country: *blank
-              elevation_track: *blank
-          race:
-            attributes:
-              total_laps:
-                must_be_greater_than_zero: "Total laps must be greater than zero"
-              average_lap_time:
-                must_be_greater_than_zero: "Average lap time must be greater than zero"
-              race_time_minutes:
-                must_be_greater_than_zero: "Race time minutes must be greater than zero"
-              planned_pit_stops:
-                must_be_non_negative_integer: "Planned pit stops must be a non-negative integer"
+              model:
+                blank: "can't be blank"
+              power:
+                blank: "can't be blank"
+              weight:
+                blank: "can't be blank"
+              fuel_capacity:
+                blank: "can't be blank"
+              category:
+                blank: "can't be blank"
+        track:
+          attributes:
+            name:
+              blank: "Name can't be blank"
+            distance:
+              blank: "Distance can't be blank"
+            number_of_curves:
+              blank: "Number of curves can't be blank"
+            country:
+              blank: "Country can't be blank"
+            elevation_track:
+              blank: "Elevation track can't be blank"
+        race:
+          attributes:
+            total_laps:
+              must_be_greater_than_zero: "Total laps must be greater than zero"
+            average_lap_time:
+              must_be_greater_than_zero: "Average lap time must be greater than zero"
+            race_time_minutes:
+              must_be_greater_than_zero: "Race time minutes must be greater than zero"
+            planned_pit_stops:
+              must_be_non_negative_integer: "Planned pit stops must be a non-negative integer"
 
-# Define common errors to avoid repetition
-common_errors:
-  blank: "can't be blank"
-  taken: "has already been taken"
+          messages:
+            taken: "has already been taken"
+            too_short: "is too short (minimum is %{count} characters)"
+            confirmation: "doesn't match confirmation"
+            invalid_value: "is not a valid value"
+            invalid_category: "is not a valid category"
+            unrealistic_power_to_weight_ratio: "Power-to-weight ratio is unrealistic (maximum 0.8 HP/kg)"
+            invalid_country: "is not a valid country"
+            duplicate_name: "has already been taken"
+            blank: "can't be blank"

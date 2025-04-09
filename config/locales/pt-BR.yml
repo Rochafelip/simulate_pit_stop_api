@@ -1,6 +1,119 @@
 pt-BR:
-  hello: "Olá"
-  welcome: "Bem-vindo"
+  devise:
+    sessions:
+      signed_in: "Você foi autenticado com sucesso."
+      signed_out: "Você foi deslogado com sucesso."
+      already_signed_out: "Você já está deslogado."
+      invalid: "Email ou senha inválidos."
+      timeout: "Sua sessão expirou. Por favor, faça login novamente."
+
+    registrations:
+      signed_up: "Bem-vindo! Você se cadastrou com sucesso."
+      updated: "Sua conta foi atualizada com sucesso."
+      destroyed: "Sua conta foi excluída com sucesso."
+      already_exists: "Este email já está em uso."
+
+    passwords:
+      send_instructions: "Você receberá um email com instruções sobre como redefinir sua senha."
+      updated: "Sua senha foi atualizada com sucesso."
+      update_not_allowed: "Você não pode alterar sua senha neste momento."
+
+    confirmations:
+      send_instructions: "Um email de confirmação foi enviado para você."
+      confirmed: "Seu endereço de email foi confirmado."
+      already_confirmed: "Seu endereço de email já foi confirmado."
+      expired: "Seu token de confirmação expirou."
+
+    failure:
+      invalid: "Email ou senha inválidos."
+      locked: "Sua conta está bloqueada."
+      expired: "Sua conta expirou."
+      not_found_in_database: "Email ou senha inválidos."
+
+  users:
+    create:
+      success: "Usuário criado com sucesso."
+      failure: "Falha ao criar usuário."
+    update_profile:
+      success: "Perfil atualizado com sucesso."
+      failure: "Falha ao atualizar perfil."
+    destroy:
+      success: "Usuário excluído com sucesso."
+      failure: "Falha ao excluir usuário."
+
+  login:
+    success: "Login realizado com sucesso!"
+    failure: "Email ou senha inválidos."
+    already_signed_in: "Você já está autenticado."
+    logout: "Você foi deslogado com sucesso."
+    remember_me: "Lembrar-me"
+    forgot_password: "Esqueceu sua senha?"
+    sign_up: "Não tem uma conta? Cadastre-se"
+    invalid_token: "O token é inválido ou expirou."
+    account_locked: "Sua conta está bloqueada. Por favor, entre em contato com o suporte."
+    session_expired: "Sua sessão expirou. Por favor, faça login novamente."
+
   errors:
     messages:
-      blank: "não pode ficar em branco"
+      blank: "não pode estar em branco"
+      invalid: "é inválido"
+      not_found: "não encontrado"
+      taken: "já foi tomado"
+      too_short: "é muito curto (o mínimo é %{count} caracteres)"
+      confirmation: "não corresponde à confirmação"
+
+    activerecord:
+      errors:
+        models:
+          user:
+            attributes:
+              email:
+                taken: "Este email já está em uso."
+              password:
+                too_short: "A senha é muito curta (o mínimo é %{count} caracteres)"
+                confirmation: "A confirmação da senha não corresponde"
+          car:
+            attributes:
+              model:
+                blank: "não pode estar em branco"
+              power:
+                blank: "não pode estar em branco"
+              weight:
+                blank: "não pode estar em branco"
+              fuel_capacity:
+                blank: "não pode estar em branco"
+              category:
+                blank: "não pode estar em branco"
+        track:
+          attributes:
+            name:
+              blank: "O nome não pode estar em branco"
+            distance:
+              blank: "A distância não pode estar em branco"
+            number_of_curves:
+              blank: "O número de curvas não pode estar em branco"
+            country:
+              blank: "O país não pode estar em branco"
+            elevation_track:
+              blank: "A elevação da pista não pode estar em branco"
+        race:
+          attributes:
+            total_laps:
+              must_be_greater_than_zero: "O número total de voltas deve ser maior que zero"
+            average_lap_time:
+              must_be_greater_than_zero: "O tempo médio por volta deve ser maior que zero"
+            race_time_minutes:
+              must_be_greater_than_zero: "O tempo total da corrida deve ser maior que zero"
+            planned_pit_stops:
+              must_be_non_negative_integer: "As paradas planejadas devem ser um número inteiro não negativo"
+
+          messages:
+            taken: "já foi tomado"
+            too_short: "é muito curto (o mínimo é %{count} caracteres)"
+            confirmation: "não corresponde à confirmação"
+            invalid_value: "não é um valor válido"
+            invalid_category: "não é uma categoria válida"
+            unrealistic_power_to_weight_ratio: "A relação potência/peso é irrealista (máximo de 0.8 HP/kg)"
+            invalid_country: "não é um país válido"
+            duplicate_name: "já foi tomado"
+            blank: "não pode estar em branco"
