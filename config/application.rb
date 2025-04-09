@@ -11,6 +11,15 @@ module SimulatePitStopApi
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.2
 
+    # Definir o idioma padrão para português (Brasil)
+    config.i18n.default_locale = :'pt-BR'
+
+    # Adicionar idiomas adicionais, caso necessário
+    config.i18n.available_locales = [:en, :'pt-BR']
+
+    # Definir o fallback de idioma, caso uma tradução não seja encontrada
+    config.i18n.fallbacks = true
+
     # Adiciona o middleware necessário para sessões
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore
@@ -23,11 +32,11 @@ module SimulatePitStopApi
 
     config.middleware.use Rack::Cors do
       allow do
-        origins '*'
-        resource '*',
+        origins "*"
+        resource "*",
           headers: :any,
-          expose: ['access-token', 'expiry', 'token-type', 'uid', 'client'],
-          methods: [:get, :post, :options, :delete, :put]
+          expose: [ "access-token", "expiry", "token-type", "uid", "client" ],
+          methods: [ :get, :post, :options, :delete, :put ]
           end
       end
     config.api_only = true

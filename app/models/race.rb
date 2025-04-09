@@ -11,26 +11,26 @@ class Race < ApplicationRecord
   # Validações básicas
   validates :total_laps, numericality: {
     greater_than: 0,
-    message: "deve ser maior que zero"
+    message: :must_be_greater_than_zero
   }
 
   validates :average_lap_time, numericality: {
     greater_than: 0,
-    message: "deve ser maior que zero"
+    message: :must_be_greater_than_zero
   }
 
   # Validações condicionais
   validates :race_time_minutes, numericality: {
     greater_than: 0,
     allow_nil: true,
-    message: "deve ser maior que zero"
+    message: :must_be_greater_than_zero
   }
 
   validates :planned_pit_stops, numericality: {
     only_integer: true,
     greater_than_or_equal_to: 0,
     allow_nil: true,
-    message: "deve ser um número inteiro não negativo"
+    message: :must_be_non_negative_integer
   }
 
   private

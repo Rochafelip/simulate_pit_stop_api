@@ -51,3 +51,5 @@ gem "rack-cors"
 gem 'pundit'
 
 gem 'active_model_serializers', '~> 0.10.0'
+
+gem 'i18n'

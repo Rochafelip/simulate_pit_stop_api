@@ -295,6 +295,7 @@ DEPENDENCIES
   debug
   devise (~> 4.9)
   devise_token_auth (~> 1.2)
+  i18n
   pg (~> 1.1)
   puma (>= 5.0)
   pundit
