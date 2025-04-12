@@ -1,18 +1,26 @@
 module Api
   module V1
     class UsersController < ApplicationController
-      before_action :authenticate_user!
-      after_action :verify_authorized, except: [ :index, :me ]
+      before_action :authenticate_user!, only: [ :index, :show, :destroy, :update_profile ]
+
+      after_action :verify_authorized, except: [ :index, :me, :create ]
       after_action :verify_policy_scoped, only: :index
 
       # POST /api/v1/users
       def create
-        @user = User.new(user_profile_params)
+        @user = User.new(sign_up_params)
+        authorize @user
 
         if @user.save
-          render json: { message: I18n.t("users.create.success"), user: @user }, status: :created, serializer: UserProfileSerializer
+          render json: {
+            message: I18n.t("users.create.success"),
+            user: ActiveModelSerializers::SerializableResource.new(@user, serializer: UserSerializer).as_json
+          }, status: :created
         else
-          render json: { errors: @user.errors.full_messages, message: I18n.t("users.create.failure") }, status: :unprocessable_entity
+          render json: {
+            errors: @user.errors.full_messages,
+            message: I18n.t("users.create.failure")
+          }, status: :unprocessable_entity
         end
       end
 
@@ -56,7 +64,18 @@ module Api
       private
 
       def sign_up_params
-        params.require(:user).permit(:email, :password, :password_confirmation, :name, :confirm_success_url)
+        # Adicione todos os campos necessários para o registro
+        params.require(:user).permit(
+          :email,
+          :password,
+          :password_confirmation,
+          :name,
+          :confirm_success_url  # Mantenha se for usado pelo Devise Token Auth
+        )
+      end
+
+      def user_profile_params
+        params.require(:user).permit(:name, :email)  # Exemplo para atualização
       end
     end
   end
