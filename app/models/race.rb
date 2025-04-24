@@ -42,8 +42,8 @@ class Race < ApplicationRecord
     self.track_name = track.name
   end
 
-  # Cálculo automático de combustível
   def calculate_total_fuel_needed
+    return if fuel_consumption_per_lap.blank? || total_laps.blank?
     self.total_fuel_needed = fuel_consumption_per_lap * total_laps
   end
 end

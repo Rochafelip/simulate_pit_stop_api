@@ -7,7 +7,8 @@ class User < ApplicationRecord
   has_many :races, dependent: :destroy
 
   # Devise e Devise Token Auth aqui
-  enum role: { normal: 0, admin: 1 }
+  enum :role, { normal: 0, admin: 1 }
+  validates :name, presence: true
 
   # Método para verificar se o usuário é admin
   def admin?

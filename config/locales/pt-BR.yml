@@ -84,6 +84,10 @@ pt-BR:
                 blank: "não pode estar em branco"
               category:
                 blank: "não pode estar em branco"
+                invalid_category: "Categoria inválida"
+              base:
+                unrealistic_power_to_weight_ratio: "Relação potência/peso irreal"
+
         track:
           attributes:
             name:
