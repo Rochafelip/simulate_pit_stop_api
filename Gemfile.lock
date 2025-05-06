@@ -115,6 +115,11 @@ GEM
     diff-lcs (1.6.1)
     drb (2.2.1)
     erubi (1.13.1)
+    factory_bot (6.5.1)
+      activesupport (>= 6.1.0)
+    factory_bot_rails (6.4.4)
+      factory_bot (~> 6.5)
+      railties (>= 5.0.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.7)
@@ -318,6 +323,7 @@ DEPENDENCIES
   debug
   devise (~> 4.9)
   devise_token_auth (~> 1.2)
+  factory_bot_rails
   i18n
   pg (~> 1.1)
   puma (>= 5.0)

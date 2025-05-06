@@ -19,6 +19,10 @@ class CarPolicy < ApplicationPolicy
     update? # Mesma regra de update
   end
 
+  def permitted_attributes
+    [:model, :power, :weight, :fuel_capacity, :category]
+  end
+
   # Escopo para filtrar registros
   class Scope < Scope
     def resolve

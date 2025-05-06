@@ -9,13 +9,13 @@ module Api
       # GET /cars
       def index
         cars = policy_scope(Car)
-        render json: cars, each_serializer: CarSerializer, status: :ok
+        render json: cars.map { |car| CarSerializer.call(car) }, status: :ok
       end
 
       # GET /cars/:id
       def show
         authorize @car
-        render json: @car, serializer: CarSerializer, status: :ok
+        render json: CarSerializer.call(@car), status: :ok
       end
 
       # POST /cars
@@ -25,9 +25,8 @@ module Api
         authorize @car
 
         if @car.save
-          render json: @car, serializer: CarSerializer, status: :created
+          render json: CarSerializer.call(@car), status: :created
         else
-          # Aqui não fazemos tradução e apenas retornamos as mensagens de erro em inglês
           render json: { errors: @car.errors.full_messages }, status: :unprocessable_entity
         end
       end
@@ -36,9 +35,8 @@ module Api
       def update
         authorize @car
         if @car.update(car_params)
-          render json: @car, serializer: CarSerializer, status: :ok
+          render json: CarSerializer.call(@car), status: :ok
         else
-          # Aqui também retornamos as mensagens de erro diretamente em inglês
           render json: { errors: @car.errors.full_messages }, status: :unprocessable_entity
         end
       end
@@ -54,10 +52,6 @@ module Api
 
       def set_car
         @car = Car.find(params[:id])
-      end
-
-      def car_params
-        params.require(:car).permit(:model, :power, :weight, :fuel_capacity, :category)
       end
     end
   end

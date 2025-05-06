@@ -29,6 +29,9 @@ pt-BR:
       locked: "Sua conta está bloqueada."
       expired: "Sua conta expirou."
       not_found_in_database: "Email ou senha inválidos."
+      user:
+        blank: "não pode ficar em branco"
+
 
   users:
     create:
@@ -58,7 +61,7 @@ pt-BR:
       blank: "não pode estar em branco"
       invalid: "é inválido"
       not_found: "não encontrado"
-      taken: "já foi tomado"
+      taken: "já foi usado"
       too_short: "é muito curto (o mínimo é %{count} caracteres)"
       confirmation: "não corresponde à confirmação"
 
@@ -72,6 +75,9 @@ pt-BR:
               password:
                 too_short: "A senha é muito curta (o mínimo é %{count} caracteres)"
                 confirmation: "A confirmação da senha não corresponde"
+              name:
+                blank: "não pode ficar em branco"
+
           car:
             attributes:
               model:
@@ -121,3 +127,5 @@ pt-BR:
             invalid_country: "não é um país válido"
             duplicate_name: "já foi tomado"
             blank: "não pode estar em branco"
+            record_invalid: "A validação falhou: %{errors}"
+            

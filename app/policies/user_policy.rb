@@ -29,13 +29,17 @@ class UserPolicy < ApplicationPolicy
     user.admin? && user != record
   end
 
+  def permitted_attributes
+    [:name, :email, :password, :password_confirmation]
+  end
+
   class Scope < Scope
     # Escopo: admin vê todos, outros não veem ninguém
     def resolve
       if user.admin?
         scope.all
       else
-        scope.none
+        scope.where(user_id: user.id)
       end
     end
   end
