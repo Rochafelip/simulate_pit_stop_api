@@ -2,6 +2,7 @@ module Api
   module V1
     class UsersController < ApplicationController
       before_action :authenticate_user!, only: %i[index show destroy update_profile]
+      before_action :set_user, only: %i[show destroy]
       after_action :verify_authorized, except: %i[index me]
       after_action :verify_policy_scoped, only: :index
 
@@ -20,14 +21,13 @@ module Api
       # GET /api/v1/users
       def index
         users = policy_scope(User)
-        render json: users.map { |u| UserSerializer.call(u) }, status: :ok
+        render json: users.map { |user| UserSerializer.call(user) }, status: :ok
       end
 
       # GET /api/v1/users/:id
       def show
-        user = User.find(params[:id])
-        authorize user
-        render json: UserSerializer.call(user), status: :ok
+        authorize @user
+        render json: UserSerializer.call(@user), status: :ok
       end
 
       # GET /api/v1/users/me
@@ -53,10 +53,17 @@ module Api
 
       # DELETE /api/v1/users/:id
       def destroy
-        user = User.find(params[:id])
-        authorize user
-        user.destroy
-        render json: { message: I18n.t("users.destroy.success") }, status: :no_content
+        authorize @user
+        @user.destroy
+        head :no_content
+      end
+
+      private
+
+      def set_user
+        @user = User.find(params[:id])
+      rescue ActiveRecord::RecordNotFound
+        render json: { error: "User not found" }, status: :not_found
       end
     end
   end

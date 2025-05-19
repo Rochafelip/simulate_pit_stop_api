@@ -1,6 +1,6 @@
 module Api
   module V1
-    class UserSerializer
+    class UserSerializer < ActiveModel::Serializer
       def self.call(user)
         {
           id: user.id,
