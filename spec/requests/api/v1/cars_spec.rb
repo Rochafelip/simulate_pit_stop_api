@@ -1,15 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "Api::V1::Cars", type: :request do
-  let(:user) do
-    User.create!(
-      email: 'user@example.com',
-      password: 'password123',
-      password_confirmation: 'password123',
-      name: 'User Teste',
-      confirmed_at: Time.current
-    )
-  end
+ let!(:user) { create(:user, password: 'password123', confirmed_at: Time.current) }
 
 def auth_headers_for(user)
   post '/auth/sign_in', params: { email: user.email, password: 'password123' }

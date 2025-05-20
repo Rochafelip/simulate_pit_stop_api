@@ -8,7 +8,7 @@ pt-BR:
       timeout: "Sua sessão expirou. Por favor, faça login novamente."
 
     registrations:
-      signed_up: "Bem-vindo! Você se cadastrou com sucesso."
+      signed_up: "Cadastro realizado com sucesso."
       updated: "Sua conta foi atualizada com sucesso."
       destroyed: "Sua conta foi excluída com sucesso."
       already_exists: "Este email já está em uso."
@@ -25,13 +25,13 @@ pt-BR:
       expired: "Seu token de confirmação expirou."
 
     failure:
+      unauthenticated: "Você precisa fazer login ou se registrar antes de continuar."
       invalid: "Email ou senha inválidos."
       locked: "Sua conta está bloqueada."
       expired: "Sua conta expirou."
       not_found_in_database: "Email ou senha inválidos."
       user:
         blank: "não pode ficar em branco"
-
 
   users:
     create:
@@ -66,33 +66,32 @@ pt-BR:
       confirmation: "não corresponde à confirmação"
 
     activerecord:
-      errors:
-        models:
-          user:
-            attributes:
-              email:
-                taken: "Este email já está em uso."
-              password:
-                too_short: "A senha é muito curta (o mínimo é %{count} caracteres)"
-                confirmation: "A confirmação da senha não corresponde"
-              name:
-                blank: "não pode ficar em branco"
+      models:
+        user:
+          attributes:
+            email:
+              taken: "Este email já está em uso."
+            password:
+              too_short: "A senha é muito curta (o mínimo é %{count} caracteres)"
+              confirmation: "A confirmação da senha não corresponde"
+            name:
+              blank: "não pode ficar em branco"
 
-          car:
-            attributes:
-              model:
-                blank: "não pode estar em branco"
-              power:
-                blank: "não pode estar em branco"
-              weight:
-                blank: "não pode estar em branco"
-              fuel_capacity:
-                blank: "não pode estar em branco"
-              category:
-                blank: "não pode estar em branco"
-                invalid_category: "Categoria inválida"
-              base:
-                unrealistic_power_to_weight_ratio: "Relação potência/peso irreal"
+        car:
+          attributes:
+            model:
+              blank: "não pode estar em branco"
+            power:
+              blank: "não pode estar em branco"
+            weight:
+              blank: "não pode estar em branco"
+            fuel_capacity:
+              blank: "não pode estar em branco"
+            category:
+              blank: "não pode estar em branco"
+              invalid_category: "Categoria inválida"
+            base:
+              unrealistic_power_to_weight_ratio: "Relação potência/peso irreal"
 
         track:
           attributes:
@@ -106,9 +105,9 @@ pt-BR:
               blank: "O país não pode estar em branco"
             elevation_track:
               blank: "A elevação da pista não pode estar em branco"
+
         race:
           attributes:
-            car_or_track_not_found: "Carro ou Pista não encontrados"
             total_laps:
               must_be_greater_than_zero: "O número total de voltas deve ser maior que zero"
             average_lap_time:
@@ -117,7 +116,6 @@ pt-BR:
               must_be_greater_than_zero: "O tempo total da corrida deve ser maior que zero"
             planned_pit_stops:
               must_be_non_negative_integer: "As paradas planejadas devem ser um número inteiro não negativo"
-
           messages:
             taken: "já foi tomado"
             too_short: "é muito curto (o mínimo é %{count} caracteres)"
@@ -129,4 +127,4 @@ pt-BR:
             duplicate_name: "já foi tomado"
             blank: "não pode estar em branco"
             record_invalid: "A validação falhou: %{errors}"
-            
+            insufficient_pit_stops: "Paradas planejadas insuficientes (mínimo: %{minimum})"

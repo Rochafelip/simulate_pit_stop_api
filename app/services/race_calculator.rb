@@ -1,24 +1,30 @@
 class RaceCalculator
-    def initialize(car, race)
-      @car = car
-      @race = race
-    end
+  def initialize(car, race)
+    @car = car
+    @race = race
+  end
 
-    def total_fuel_needed
-      @race.fuel_consumption_per_lap * @race.total_laps
-    end
+  def total_fuel_needed
+    return 0 unless @race.fuel_consumption_per_lap && @race.total_laps
 
-    def minimum_pit_stops
-      (total_fuel_needed / @car.fuel_capacity).ceil - 1
-    end
+    @race.fuel_consumption_per_lap * @race.total_laps
+  end
 
-    def pit_stops_sufficient?
-      @race.planned_pit_stops >= minimum_pit_stops
-    end
+  def minimum_pit_stops
+    fuel_needed = total_fuel_needed
+    tank_capacity = @car&.fuel_capacity
 
-    def validate_mandatory_pit_stops(race)
-      if race.mandatory_pit_stop && race.planned_pit_stops.zero?
-        race.errors.add(:planned_pit_stops, "Pit stop obrigatório não planejado")
-      end
-    end
+    return 0 if fuel_needed.zero? || tank_capacity.blank? || tank_capacity.zero?
+
+    (fuel_needed / tank_capacity.to_f).ceil
+  end
+
+  def pit_stops_sufficient?
+    planned = @race.planned_pit_stops.to_i
+    planned >= minimum_pit_stops
+  end
+
+  def validate_mandatory_pit_stops(race = @race)
+    !race.mandatory_pit_stop || race.planned_pit_stops.to_i > 0
+  end
 end

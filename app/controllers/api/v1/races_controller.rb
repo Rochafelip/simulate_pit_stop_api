@@ -2,11 +2,11 @@ module Api
   module V1
     class RacesController < ApplicationController
       before_action :authenticate_user!
-      before_action :set_race, only: [:show, :destroy]
+      before_action :set_race, only: [ :show, :update, :destroy ]
       after_action :verify_authorized
 
       def index
-        @races = current_user.races
+        @races = policy_scope(Race).where(user_id: current_user.id)
         authorize @races
         render json: @races, each_serializer: Api::V1::RaceSerializer
       end
@@ -17,22 +17,36 @@ module Api
       end
 
       def create
-        @race = current_user.races.new(race_params)
+        @race = Race.new(race_params.merge(user_id: current_user.id))
         authorize @race
 
-        return render_not_found unless car_and_track_present?
+        metrics = apply_race_metrics(@race)
 
-        assign_car_and_track_data
-        calculate_fuel
+        if metrics[:pit_stops_sufficient] && metrics[:mandatory_pit_stop_valid] && @race.save
+          render json: @race, serializer: Api::V1::RaceSerializer, status: :created
+        else
+          @race.errors.add(:planned_pit_stops, I18n.t("errors.activerecord.models.race.messages.insufficient_pit_stops", minimum: metrics[:minimum_pit_stops])) unless metrics[:pit_stops_sufficient]
+          render json: { errors: @race.errors }, status: :unprocessable_entity
+        end
+      end
 
-        if pit_stops_valid?
-          if @race.save
-            render json: @race, serializer: Api::V1::RaceSerializer, status: :created
+      def update
+        authorize @race
+
+        if @race.update(race_params)
+          metrics = apply_race_metrics(@race)
+
+          if metrics[:pit_stops_sufficient] && metrics[:mandatory_pit_stop_valid] && @race.save
+            render json: @race, serializer: Api::V1::RaceSerializer
           else
-            render json: { errors: @race.errors.full_messages }, status: :unprocessable_entity
+            @race.errors.add(:planned_pit_stops, I18n.t(
+              "errors.activerecord.models.race.messages.insufficient_pit_stops",
+              minimum: metrics[:minimum_pit_stops]
+            ))
+            render json: { errors: @race.errors }, status: :unprocessable_entity
           end
         else
-          render json: { errors: @race.errors.full_messages }, status: :unprocessable_entity
+          render json: { errors: @race.errors }, status: :unprocessable_entity
         end
       end
 
@@ -44,48 +58,23 @@ module Api
 
       private
 
+      def set_race
+        @race = Race.find_by(id: params[:id])
+        render json: { error: "Race not found" }, status: :not_found unless @race
+      end
+
+      def apply_race_metrics(race)
+        metrics = RaceMetricsService.new(race).compute_all_metrics
+        race.total_fuel_needed = metrics[:total_fuel_needed]
+        metrics
+      end
+
       def race_params
         params.require(:race).permit(
-          :car_id, :track_id, :total_laps,
-          :fuel_consumption_per_lap, :average_lap_time,
-          :mandatory_pit_stop, :planned_pit_stops, :race_time_minutes
+          :car_id, :track_id, :total_laps, :fuel_consumption_per_lap,
+          :average_lap_time, :race_time_minutes,
+          :mandatory_pit_stop, :planned_pit_stops
         )
-      end
-
-      def set_race
-        @race = Race.find(params[:id])
-      rescue ActiveRecord::RecordNotFound
-        render json: { error: I18n.t("race.errors.not_found") }, status: :not_found
-      end
-
-      def car_and_track_present?
-        @race.car.present? && @race.track.present?
-      end
-
-      def render_not_found
-        render json: { errors: I18n.t("race.attributes.car_or_track_not_found") }, status: :unprocessable_entity
-      end
-
-      def assign_car_and_track_data
-        @race.car_name = @race.car.model
-        @race.car_category = @race.car.category
-        @race.track_name = @race.track.name
-      end
-
-      def calculate_fuel
-        calculator = RaceCalculator.new(@race.car, @race)
-        @race.total_fuel_needed = calculator.total_fuel_needed
-        @pit_stop_validator = calculator
-      end
-
-      def pit_stops_valid?
-        if @pit_stop_validator.pit_stops_sufficient? &&
-           @pit_stop_validator.validate_mandatory_pit_stops(@race)
-          true
-        else
-          @race.errors.add(:planned_pit_stops, I18n.t("races.errors.insufficient_pit_stops", count: @pit_stop_validator.minimum_pit_stops))
-          false
-        end
       end
     end
   end
