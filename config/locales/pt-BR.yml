@@ -108,6 +108,7 @@ pt-BR:
               blank: "A elevação da pista não pode estar em branco"
         race:
           attributes:
+            car_or_track_not_found: "Carro ou Pista não encontrados"
             total_laps:
               must_be_greater_than_zero: "O número total de voltas deve ser maior que zero"
             average_lap_time:

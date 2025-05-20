@@ -26,12 +26,6 @@ class Track < ApplicationRecord
     message: :invalid_value
   }
 
-  # Validação de país (lista de países reconhecidos)
-  validates :country, inclusion: {
-    in: VALID_COUNTRIES,
-    message: :invalid_country
-  }
-
   # Validação customizada: nome deve ser único considerando maiúsculas/minúsculas
   validates :name, uniqueness: { case_sensitive: false, message: :duplicate_name }
 end

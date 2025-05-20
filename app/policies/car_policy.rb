@@ -12,15 +12,15 @@ class CarPolicy < ApplicationPolicy
   end
 
   def update?
-    record.user == user # Apenas dono do carro
+    user.present?
   end
 
   def destroy?
-    update? # Mesma regra de update
+    user.present?
   end
 
   def permitted_attributes
-    [:model, :power, :weight, :fuel_capacity, :category]
+    [ :model, :power, :weight, :fuel_capacity, :category ]
   end
 
   # Escopo para filtrar registros

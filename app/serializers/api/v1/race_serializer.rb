@@ -24,7 +24,7 @@ module Api
 
     # Tempo estimado gasto em pit stops (30s por parada)
     def estimated_pit_time
-      object.planned_pit_stops * 30 # segundos
+      object.planned_pit_stops * 30
     end
   end
   end

@@ -1,9 +1,9 @@
 module Api
   module V1
     class TracksController < ApplicationController
-      before_action :authenticate_user!, only: [ :update, :destroy ]
+      before_action :authenticate_user!, only: [ :create, :update, :destroy ]
       before_action :set_track, only: [ :show, :update, :destroy ]
-      after_action :verify_authorized, except: [ :index, :show, :create ]
+      after_action :verify_authorized, except: :index
       after_action :verify_policy_scoped, only: :index
 
       # GET /tracks
@@ -20,8 +20,7 @@ module Api
 
         # POST /tracks
         def create
-        @track = Track.new(track_params)
-        @track.user = current_user if user_signed_in?
+        @track = Track.new(permitted_attributes(Track))
         authorize @track
 
         if @track.save
@@ -34,7 +33,7 @@ module Api
       # PATCH/PUT /tracks/:id
       def update
         authorize @track
-        if @track.update(track_params)
+        if @track.update(permitted_attributes(Track))
           render json: @track, serializer: Api::V1::TrackSerializer, status: :ok
         else
           render json: { errors: @track.errors.full_messages }, status: :unprocessable_entity

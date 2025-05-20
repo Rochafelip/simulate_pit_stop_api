@@ -1,37 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe Race, type: :model do
-  let(:user) do
-    User.create!(
-      email: "user@example.com",
-      password: "password123",
-      password_confirmation: "password123",
-      name: "Test User"
-    )
-  end
-
-  let(:car) do
-    Car.create!(
-      model: "Porsche 911",
-      power: 500,
-      weight: 1300,
-      fuel_capacity: 100,
-      category: "GT3"
-    )
-  end
-
-  let(:track) do
-    Track.create!(
-      name: "Interlagos",
-      distance: 4.3,
-      number_of_curves: 15,
-      country: "Brazil",
-      elevation_track: 43
-    )
-  end
+  let(:user) { create(:user) }
+  let(:car) { create(:car) }
+  let(:track) { create(:track) }
 
   it "é válido com atributos obrigatórios" do
-    race = Race.new(
+    race = build(:race,
       car: car,
       track: track,
       user: user,
@@ -42,18 +17,19 @@ RSpec.describe Race, type: :model do
       race_time_minutes: 100,
       mandatory_pit_stop: true,
       planned_pit_stops: 2,
-      car_name: "Porsche 911",
-      car_category: "GT3",
-      track_name: "Interlagos"
+      car_name: car.model,
+      car_category: car.category,
+      track_name: track.name
     )
 
     expect(race).to be_valid
   end
 
   it "é inválido sem usuário" do
-    race = Race.new(
+    race = build(:race,
       car: car,
       track: track,
+      user: nil,
       fuel_consumption_per_lap: 2.5,
       average_lap_time: 90.5,
       race_time_minutes: 100,
@@ -64,7 +40,7 @@ RSpec.describe Race, type: :model do
   end
 
   it "é inválido com pit stops negativos" do
-    race = Race.new(
+    race = build(:race,
       car: car,
       track: track,
       user: user,
@@ -78,7 +54,7 @@ RSpec.describe Race, type: :model do
   end
 
   it "pertence a um carro, pista e usuário" do
-    race = Race.create!(
+    race = create(:race,
       car: car,
       track: track,
       user: user,
