@@ -20,6 +20,9 @@ module SimulatePitStopApi
     # Definir o fallback de idioma, caso uma tradução não seja encontrada
     config.i18n.fallbacks = true
 
+    config.action_controller.wrap_parameters format: [:json]
+
+
     # Adiciona o middleware necessário para sessões
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore

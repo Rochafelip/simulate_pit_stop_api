@@ -1,12 +1,10 @@
 class Race < ApplicationRecord
-  # Associações (garanta que car e track sejam obrigatórios)
   belongs_to :user
   belongs_to :car, required: true
   belongs_to :track, required: true
 
   # Callbacks
   before_validation :set_denormalized_fields
-  before_validation :calculate_total_fuel_needed
 
   # Validações básicas
   validates :total_laps, numericality: {
@@ -40,10 +38,5 @@ class Race < ApplicationRecord
     self.car_name = car.model
     self.car_category = car.category
     self.track_name = track.name
-  end
-
-  # Cálculo automático de combustível
-  def calculate_total_fuel_needed
-    self.total_fuel_needed = fuel_consumption_per_lap * total_laps
   end
 end

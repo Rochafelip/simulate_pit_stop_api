@@ -1,15 +1,17 @@
 module Api
   module V1
-  class UserSerializer < ActiveModel::Serializer
-    attributes :id, :name, :email, :created_at, :updated_at
+    class UserSerializer < ActiveModel::Serializer
+      def self.call(user)
+        {
+          id: user.id,
+          name: user.name,
+          email: user.email
+        }
+      end
 
-    def created_at
-      object.created_at.strftime("%d/%m/%Y %H:%M")
+      def initialize(user)
+        @user = user
+      end
     end
-
-    def updated_at
-      object.updated_at.strftime("%d/%m/%Y %H:%M")
-    end
-  end
   end
 end
