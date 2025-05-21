@@ -32,4 +32,7 @@ group :development, :test do
   gem "database_cleaner-active_record"
   gem "factory_bot_rails"
   gem "rubocop-rails-omakase", require: false
+  gem 'rswag-api'
+  gem 'rswag-ui'
+  gem 'rswag-specs'
 end

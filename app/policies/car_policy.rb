@@ -8,7 +8,7 @@ class CarPolicy < ApplicationPolicy
   end
 
   def create?
-    user.present? # Apenas usuários logados
+    user.present?
   end
 
   def update?

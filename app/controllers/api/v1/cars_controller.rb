@@ -25,7 +25,7 @@ module Api
         if @car.save
           render json: @car, serializer: Api::V1::CarSerializer, status: :created
         else
-          render json: { errors: @car.errors.full_messages }, status: :unprocessable_entity
+          render json: { errors: @car.errors }, status: :unprocessable_entity
         end
       end
 
@@ -35,7 +35,7 @@ module Api
         if @car.update(permitted_attributes(@car))
           render json: @car, serializer: Api::V1::CarSerializer, status: :ok
         else
-          render json: { errors: @car.errors.full_messages }, status: :unprocessable_entity
+          render json: { errors: @car.errors }, status: :unprocessable_entity
         end
       end
 
