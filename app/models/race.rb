@@ -1,10 +1,10 @@
 class Race < ApplicationRecord
   belongs_to :user
-  belongs_to :car, required: true
-  belongs_to :track, required: true
+  belongs_to :car
+  belongs_to :track
 
   # Callbacks
-  before_validation :set_denormalized_fields
+  before_save :set_denormalized_fields
 
   # Validações básicas
   validates :total_laps, numericality: {
@@ -33,8 +33,9 @@ class Race < ApplicationRecord
 
   private
 
-  # Desnormalização de dados
   def set_denormalized_fields
+    return unless car && track
+
     self.car_name = car.model
     self.car_category = car.category
     self.track_name = track.name

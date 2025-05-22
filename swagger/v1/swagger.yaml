@@ -20,9 +20,13 @@ components:
 paths:
   "/api/v1/cars":
     get:
-      summary: Lista todos os carros
+      summary: Lista de todos os carros
       tags:
       - Carros
+      security:
+      - accessToken: []
+        client: []
+        uid: []
       responses:
         '200':
           description: lista de carros retornada com sucesso
@@ -37,9 +41,9 @@ paths:
       parameters: []
       responses:
         '201':
-          description: carro criado com sucesso
+          description: Carro criado com sucesso
         '422':
-          description: dados inválidos
+          description: Carro com dados inválidos
       requestBody:
         content:
           application/json:
@@ -76,9 +80,9 @@ paths:
       - Carros
       responses:
         '200':
-          description: carro encontrado
+          description: Carro encontrado
         '404':
-          description: carro não encontrado
+          description: Carro não encontrado
     put:
       summary: Atualiza um carro
       tags:
@@ -90,9 +94,9 @@ paths:
       parameters: []
       responses:
         '200':
-          description: carro atualizado com sucesso
+          description: Carro atualizado com sucesso
         '404':
-          description: carro não encontrado
+          description: Carro não encontrado
       requestBody:
         content:
           application/json:
@@ -125,18 +129,242 @@ paths:
           type: string
       responses:
         '204':
-          description: carro deletado com sucesso
-  "/auth/sign_in":
+          description: Carro deletado com sucesso
+        '404':
+          description: carro não encontrado
+  "/api/v1/races":
+    get:
+      summary: Lista de todas as corridas
+      tags:
+      - Corridas
+      security:
+      - accessToken: []
+        client: []
+        uid: []
+      responses:
+        '200':
+          description: Lista de corridas retornada com sucesso
     post:
-      summary: Loga um usuário
+      summary: Cria uma corrida
+      tags:
+      - Corridas
+      security:
+      - accessToken: []
+        client: []
+        uid: []
+      parameters: []
+      responses:
+        '201':
+          description: Corrida criada com sucesso
+        '422':
+          description: Corrida com dados inválidos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                car_id:
+                  type: integer
+                track_id:
+                  type: integer
+                total_laps:
+                  type: integer
+                fuel_consumption_per_lap:
+                  type: float
+                average_lap_time:
+                  type: float
+                mandatory_pit_stop:
+                  type: boolean
+                planned_pit_stops:
+                  type: integer
+                race_time_minutes:
+                  type: integer
+              required:
+              - car_id
+              - track_id
+              - total_laps
+              - fuel_consumption_per_lap
+              - average_lap_time
+              - mandatory_pit_stop
+              - planned_pit_stops
+              - race_time_minutes
+  "/api/v1/races/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: Mostra uma corrida
+      tags:
+      - Corridas
+      security:
+      - accessToken: []
+        client: []
+        uid: []
+      responses:
+        '200':
+          description: Detalhes da corrida
+        '404':
+          description: Corrida não encontrada
+    put:
+      summary: Atualiza uma corrida
+      tags:
+      - Corridas
+      security:
+      - accessToken: []
+        client: []
+        uid: []
+      parameters: []
+      responses:
+        '200':
+          description: Corrida atualizada com sucesso
+        '422':
+          description: Falha na atualização
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                total_laps:
+                  type: integer
+                planned_pit_stops:
+                  type: integer
+              required:
+              - total_lapsplanned_pit_stops
+    delete:
+      summary: Remove uma corrida
+      tags:
+      - Corridas
+      security:
+      - accessToken: []
+        client: []
+        uid: []
+      responses:
+        '204':
+          description: Corrida removida com sucesso
+  "/api/v1/tracks":
+    get:
+      summary: Lista de todas as pistas
+      tags:
+      - Pistas
+      security:
+      - accessToken: []
+        client: []
+        uid: []
+      responses:
+        '200':
+          description: Lista de pistas retornada com sucesso
+    post:
+      summary: Cria uma pista
+      tags:
+      - Pistas
+      security:
+      - accessToken: []
+        client: []
+        uid: []
+      parameters: []
+      responses:
+        '201':
+          description: Pista criada com sucesso
+        '422':
+          description: Pista com dados inválidos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                country:
+                  type: string
+                distance:
+                  type: number
+                number_of_curves:
+                  type: integer
+                elevation_track:
+                  type: integer
+              required:
+              - name
+              - country
+              - distance
+              - number_of_curves
+              - elevation_track
+  "/api/v1/tracks/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: ID da pista
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Mostra uma pista
+      tags:
+      - Pistas
+      responses:
+        '200':
+          description: Pista encontrada
+        '404':
+          description: Pista não encontrada
+    put:
+      summary: Atualiza uma pista
+      tags:
+      - Pistas
+      security:
+      - accessToken: []
+        client: []
+        uid: []
+      parameters: []
+      responses:
+        '200':
+          description: Pista atualizada com sucesso
+        '404':
+          description: Pista não encontrada
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                country:
+                  type: string
+                distance:
+                  type: number
+                number_of_curves:
+                  type: integer
+                elevation_track:
+                  type: integer
+    delete:
+      summary: Deleta uma pista
+      tags:
+      - Pistas
+      security:
+      - accessToken: []
+        client: []
+        uid: []
+      responses:
+        '204':
+          description: Pista deletada com sucesso
+        '404':
+          description: Pista não encontrada
+  "/auth":
+    post:
+      summary: Cria (cadastra) um novo usuário
       tags:
       - Usuários
       parameters: []
       responses:
         '200':
-          description: Usuário autenticado
-        '401':
-          description: Credenciais inválidas
+          description: Usuário criado com sucesso
+        '422':
+          description: Dados inválidos para criação
       requestBody:
         content:
           application/json:
@@ -145,15 +373,72 @@ paths:
               properties:
                 email:
                   type: string
-                  example: user@example.com
+                name:
+                  type: string
                 password:
                   type: string
-                  example: password123
+                password_confirmation:
+                  type: string
+                confirm_success_url:
+                  type: string
               required:
               - email
               - password
+              - password_confirmation
+              - name
+              - confirm_success_url
+  "/auth/sign_in":
+    post:
+      summary: Loga um usuário
+      tags:
+      - Usuários
+      parameters: []
+      responses:
+        '200':
+          description: Login bem-sucedido, tokens retornados no header
+        '401':
+          description: Login falhou – credenciais inválidas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+              - email
+              - password
+  "/auth/sign_out":
+    delete:
+      summary: Desloga um usuário
+      tags:
+      - Usuários
+      security:
+      - accessToken: []
+        client: []
+        uid: []
+      responses:
+        '200':
+          description: Logout bem-sucedido
+        '404':
+          description: Token inválido ou já expirado
+  "/auth/validate_token":
+    get:
+      summary: Valida se o token atual ainda é válido
+      tags:
+      - Usuários
+      security:
+      - accessToken: []
+        client: []
+        uid: []
+      responses:
+        '200':
+          description: Token válido
+        '401':
+          description: Token inválido ou expirado
 servers:
-- url: https://{defaultHost}
-  variables:
-    defaultHost:
-      default: www.example.com
+- url: http://localhost:3000
+  description: Desenvolvimento local

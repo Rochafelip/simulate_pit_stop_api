@@ -60,6 +60,7 @@ pt-BR:
     messages:
       blank: "não pode estar em branco"
       invalid: "é inválido"
+      invalid_value: "Valor inválido"
       not_found: "não encontrado"
       taken: "já foi usado"
       too_short: "é muito curto (o mínimo é %{count} caracteres)"

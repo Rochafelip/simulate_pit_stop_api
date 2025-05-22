@@ -3,10 +3,9 @@
 require 'rails_helper'
 
 RSpec.configure do |config|
-  # Pasta onde o Swagger JSON/YAML será gerado
-  config.openapi_root = Rails.root.join('swagger').to_s
+  config.swagger_root = Rails.root.join('swagger').to_s
 
-  config.openapi_specs = {
+  config.swagger_docs = {
     'v1/swagger.yaml' => {
       openapi: '3.0.1',
       info: {
@@ -32,21 +31,15 @@ RSpec.configure do |config|
           }
         }
       },
-      # REMOVIDO security global para não exigir token em todas as rotas
       paths: {},
       servers: [
         {
-          url: 'https://{defaultHost}',
-          variables: {
-            defaultHost: {
-              default: 'www.example.com'
-            }
-          }
+          url: 'http://localhost:3000',
+          description: 'Desenvolvimento local'
         }
       ]
     }
   }
 
-  # Formato de saída do swagger
-  config.openapi_format = :yaml
+  config.swagger_format = :yaml
 end
