@@ -1,22 +1,22 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  host: localhost       # Conexão via TCP/IP
-  port: 5434            # Porta customizada (5434)
-  username: felipe # Ex: felipe, postgres, etc.
-  password: 123   # Se houver senha
-  pool: 5
+  host: <%= ENV.fetch("DB_HOST", "localhost") %>
+  port: <%= ENV.fetch("DB_PORT", "5432") %>
+  username: <%= ENV.fetch("DB_USERNAME", "felipe") %>
+  password: <%= ENV.fetch("DB_PASSWORD", "") %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
   <<: *default
-  database: simulate_pit_stop_api_development
+  database: <%= ENV.fetch("DB_NAME", "simulate_pit_stop_api_development") %>
 
 test:
   <<: *default
-  database: simulate_pit_stop_api_test
+  database: <%= ENV.fetch("DB_NAME", "simulate_pit_stop_api_test") %>
 
 production:
   <<: *default
-  database: simulate_pit_stop_api_production
-  username: simulate_pit_stop_api
-  password: <%= ENV["SIMULATE_PIT_STOP_API_DATABASE_PASSWORD"] %>
+  database: <%= ENV.fetch("DB_NAME", "simulate_pit_stop_api_production") %>
+  username: <%= ENV.fetch("DB_USERNAME", "felipe") %>
+  password: <%= ENV.fetch("DB_PASSWORD", "") %>
