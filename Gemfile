@@ -20,7 +20,7 @@ gem "active_model_serializers", "~> 0.10.0"
 gem "i18n"
 
 # Países
-gem "countries", "~> 7.0"
+gem "countries", "~> 8.0"
 
 # CORS
 gem "rack-cors"
