@@ -32,7 +32,7 @@ gem 'dotenv-rails', groups: [:development, :test]
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
   gem "brakeman", require: false
-  gem "rspec-rails", "~> 7.1.1"
+  gem "rspec-rails", "~> 8.0.1"
   gem "database_cleaner-active_record"
   gem "factory_bot_rails"
   gem "rubocop-rails-omakase", require: false
