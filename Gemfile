@@ -13,6 +13,8 @@ gem "devise_token_auth", "~> 1.2"
 # Autorização
 gem "pundit"
 
+gem "prettyprint"
+
 # Serialização
 gem "active_model_serializers", "~> 0.10.0"
 
