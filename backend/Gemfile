@@ -24,17 +24,18 @@ gem "i18n"
 # Países
 gem "countries", "~> 7.0"
 
+gem "rswag"
+
 # CORS
 gem "rack-cors"
 
 gem 'dotenv-rails', groups: [:development, :test]
 
-gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
-gem "brakeman", require: false
-gem "rspec-rails", "~> 7.1.1"
-gem "database_cleaner-active_record"
-gem "factory_bot_rails"
-gem "rubocop-rails-omakase", require: false
-gem "rswag-api"
-gem "rswag-ui"
-gem "rswag-specs"
+group :development, :test do
+  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
+  gem "brakeman", require: false
+  gem "rspec-rails", "~> 7.1.1"
+  gem "database_cleaner-active_record"
+  gem "factory_bot_rails"
+  gem "rubocop-rails-omakase", require: false
+end
