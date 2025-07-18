@@ -42,6 +42,6 @@ module SimulatePitStopApi
           methods: [ :get, :post, :options, :delete, :put ]
           end
       end
-    config.api_only = true
+    # config.api_only = true
   end
 end

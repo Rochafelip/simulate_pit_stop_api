@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+ get '/', to: proc { [200, {}, ['API Simulate Pit Stop']] }
+
   mount Rswag::Ui::Engine => '/api-docs'
   mount Rswag::Api::Engine => '/api-docs'
   namespace :api do
