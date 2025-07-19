@@ -1,27 +1,15 @@
-# README
+Liste os containers (mesmo os parados):
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+docker ps -a
+Pare os containers ativos que estão usando essa rede:
 
-Things you may want to cover:
+docker stop simulate-pit-stop-api_frontend_1 simulate-pit-stop-api_db_1 simulate-pit-stop-api_backend_1
+Remova esses containers:
 
-* Ruby version
+docker rm simulate-pit-stop-api_frontend_1 simulate-pit-stop-api_db_1 simulate-pit-stop-api_backend_1
+Agora remova a rede:
 
-* System dependencies
+docker network rm simulate-pit-stop-api_default
+Por fim, faça o build e up novamente:
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-user = User.find_by(email: 'feliperocha@email.com')
-user.confirm
+docker-compose up --build

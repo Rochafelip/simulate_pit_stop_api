@@ -2,6 +2,10 @@ class ApplicationController < ActionController::API
         include DeviseTokenAuth::Concerns::SetUserByToken
         include Pundit::Authorization
 
+        def current_user
+          current_api_v1_user
+        end
+
         before_action :configure_permitted_parameters, if: :devise_controller?
 
         rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
