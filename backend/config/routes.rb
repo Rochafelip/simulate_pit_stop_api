@@ -11,6 +11,8 @@ Rails.application.routes.draw do
       resources :tracks, only: [:index, :show, :create, :update, :destroy]
       resources :races, only: [:index, :show, :create, :update, :destroy]
       resources :users, only: [:index, :show, :create, :update, :destroy]
+
+      post 'confirm_user', to: 'users#confirm_user'
     end
   end
 end

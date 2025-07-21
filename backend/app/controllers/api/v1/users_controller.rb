@@ -1,9 +1,9 @@
 module Api
   module V1
     class UsersController < ApplicationController
-      before_action :authenticate_user!, only: %i[index show destroy update_profile]
+      before_action :authenticate_user!, only: %i[index show destroy]
       before_action :set_user, only: %i[show destroy]
-      after_action :verify_authorized, except: %i[index me]
+      after_action :verify_authorized, except: %i[index]
       after_action :verify_policy_scoped, only: :index
 
       # POST /api/v1/users
@@ -30,24 +30,22 @@ module Api
         render json: UserSerializer.call(@user), status: :ok
       end
 
-      # GET /api/v1/users/me
-      def me
-        render json: UserSerializer.call(current_user), status: :ok
-      end
+      # POST /api/v1/confirm_user
+      def confirm_user
+        user = User.find_by(email: params[:email])
 
-      # PATCH /api/v1/users/me
-      def update_profile
-        authorize current_user
-        if current_user.update(permitted_attributes(current_user))
-          render json: {
-            message: I18n.t("users.update_profile.success"),
-            user: UserSerializer.call(current_user)
-          }, status: :ok
+        unless user
+          render json: { error: 'Usuário não encontrado.' }, status: :not_found and return
+        end
+
+        if user.confirmed?
+          render json: { message: 'Usuário já confirmado.' }, status: :ok and return
+        end
+
+        if user.confirm
+          render json: { message: 'Usuário confirmado com sucesso.' }, status: :ok
         else
-          render json: {
-            message: I18n.t("users.update_profile.failure"),
-            errors: current_user.errors.full_messages
-          }, status: :unprocessable_entity
+          render json: { error: 'Não foi possível confirmar o usuário.' }, status: :unprocessable_entity
         end
       end
 
@@ -63,7 +61,7 @@ module Api
       def set_user
         @user = User.find(params[:id])
       rescue ActiveRecord::RecordNotFound
-        render json: { error: "User not found" }, status: :not_found
+        render json: { error: 'Usuário não encontrado.' }, status: :not_found
       end
     end
   end
