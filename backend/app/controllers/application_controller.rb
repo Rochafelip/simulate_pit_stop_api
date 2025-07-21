@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::API
         include DeviseTokenAuth::Concerns::SetUserByToken
         include Pundit::Authorization
+        include ActionController::Cookies
 
         def current_user
           current_api_v1_user

@@ -13,3 +13,15 @@ docker network rm simulate-pit-stop-api_default
 Por fim, faça o build e up novamente:
 
 docker-compose up --build
+
+Tudo Junto:
+docker-compose down && docker network rm simulate-pit-stop-api_default && docker-compose up --build
+
+
+Reconstrua do zero (limpando cache):
+
+Para garantir que o Docker copie o novo entrypoint.sh, execute:
+
+docker-compose down --volumes --remove-orphans
+docker-compose build --no-cache
+docker-compose up
