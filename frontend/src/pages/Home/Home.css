@@ -1,0 +1,7 @@
+.container {
+  max-width: 900px;
+}
+
+button {
+  min-width: 180px;
+}

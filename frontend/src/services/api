@@ -1,0 +1,31 @@
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: "http://localhost:3000/api/v1",
+  withCredentials: true, 
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+  },
+});
+
+api.interceptors.request.use((config) => {
+  const authTokens = localStorage.getItem("authTokens");
+  if (authTokens) {
+    const { 
+      "access-token": accessToken, 
+      client, 
+      uid 
+    } = JSON.parse(authTokens);
+
+    if (accessToken && client && uid) {
+      config.headers["access-token"] = accessToken;
+      config.headers["client"] = client;
+      config.headers["uid"] = uid;
+    }
+  }
+
+  return config;
+});
+
+export default api;

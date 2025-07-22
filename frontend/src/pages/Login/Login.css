@@ -1,0 +1,101 @@
+:root {
+  --racing-red: #d62828;
+  --dark-carbon: #1e1e1e;
+  --metallic: #2f2f2f;
+  --light-gray: #cccccc;
+}
+
+body {
+  background-color: var(--dark-carbon);
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-page {
+  height: 100vh;
+  background: linear-gradient(135deg, #1e1e1e 0%, #2f2f2f 100%);
+}
+
+.login-form {
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--metallic);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+  border: 1px solid #444;
+  color: white;
+}
+
+.login-form h2 {
+  color: var(--racing-red);
+  font-weight: 700;
+  text-shadow: 1px 1px #000;
+}
+
+.login-form .form-label {
+  color: var(--light-gray);
+}
+
+.login-form input.form-control {
+  border: 1px solid #555;
+  color: white;
+}
+
+.login-form input.form-control:focus {
+  border-color: var(--racing-red);
+  box-shadow: 0 0 5px var(--racing-red);
+  background-color: #3a3a3a;
+}
+
+.login-form .btn-primary {
+  background-color: var(--racing-red);
+  border: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.login-form .btn-primary:hover {
+  background-color: #a61c1c;
+}
+
+.text-gray {
+  color: #aaa;
+}
+
+a {
+  color: var(--racing-red);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Fundo metálico personalizado para inputs */
+.input-metallic {
+  background: var(--metallic);
+  color: #fff; /* Ajuste para texto legível */
+  border: 1px solid #ccc;
+  transition: border-color 0.3s ease;
+}
+
+.input-metallic:focus {
+  border-color: #0d6efd; /* cor padrão do bootstrap blue */
+  outline: none;
+  box-shadow: 0 0 5px rgba(13, 110, 253, 0.5);
+}
+
+/* Se quiser, pode personalizar a cor do placeholder */
+.input-metallic::placeholder {
+  color: #ddd;
+}
+
+/* Se quiser, ajustar a cor do link */
+.login-form a {
+  color: #0d6efd;
+  text-decoration: none;
+  transition: text-decoration 0.3s ease;
+}
+
+.login-form a:hover {
+  text-decoration: underline;
+}
