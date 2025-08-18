@@ -1,26 +1,26 @@
 class TrackPolicy < ApplicationPolicy
   def index?
-    true # Todos podem listar
+    true
   end
 
   def show?
-    true # Todos podem ver
+    true
   end
 
   def create?
-    user.present? # Apenas usuários logados
+    user.present?
   end
 
   def update?
-    create?
+    user.present? # Qualquer user autenticado pode editar
   end
 
   def destroy?
-    update? # Mesma regra de update
+    user.admin? # Apenas admins podem deletar
   end
 
   def permitted_attributes
-    [ :id, :name, :country, :distance, :number_of_curves, :elevation_track, :created_at, :updated_at ]
+    [:name, :country, :distance, :number_of_curves, :elevation_track]
   end
   # Escopo para filtrar registros
   class Scope < Scope

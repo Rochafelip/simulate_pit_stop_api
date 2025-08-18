@@ -1,9 +1,11 @@
 module Api
   module V1
     class UsersController < ApplicationController
-      before_action :authenticate_user!, only: %i[index show destroy]
+      before_action :authenticate_api_v1_user!, only: %i[index show destroy]
       before_action :set_user, only: %i[show destroy]
-      after_action :verify_authorized, except: %i[index]
+      before_action :ensure_json_request
+
+      after_action :verify_authorized, except: %i[index confirm_user]
       after_action :verify_policy_scoped, only: :index
 
       # POST /api/v1/users
@@ -33,16 +35,15 @@ module Api
       # POST /api/v1/confirm_user
       def confirm_user
         user = User.find_by(email: params[:email])
-
         unless user
           render json: { error: 'Usuário não encontrado.' }, status: :not_found and return
         end
 
-        if user.confirmed?
-          render json: { message: 'Usuário já confirmado.' }, status: :ok and return
-        end
+        # authorize user, :confirm_user?  # opcional, se usar Pundit
 
-        if user.confirm
+        if user.confirmed?
+          render json: { message: 'Usuário já confirmado.' }, status: :ok
+        elsif user.confirm
           render json: { message: 'Usuário confirmado com sucesso.' }, status: :ok
         else
           render json: { error: 'Não foi possível confirmar o usuário.' }, status: :unprocessable_entity
@@ -57,6 +58,12 @@ module Api
       end
 
       private
+
+      def ensure_json_request
+        return if request.format.json?
+
+        render body: nil, status: 406
+      end
 
       def set_user
         @user = User.find(params[:id])

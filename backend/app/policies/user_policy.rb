@@ -1,46 +1,46 @@
-class UserPolicy < ApplicationPolicy
-  # Permite que qualquer um crie um usuário (registro público)
-  def create?
-    true
-  end
+    class UserPolicy < ApplicationPolicy
+      # Qualquer usuário autenticado pode criar um usuário (ex: cadastro)
+      def create?
+        true
+      end
 
-  # Listagem de usuários (só admin)
-  def index?
-    user.admin?
-  end
+      # Index só para admin (ou ajuste conforme seu requisito)
+      def index?
+        user.present? && user.admin?
+      end
 
-  # Visualizar perfil (só admin ou o próprio usuário)
-  def show?
-    user.admin? || record == user
-  end
+      # Mostrar usuário: só ele mesmo ou admin
+      def show?
+        user.present? && (record.id == user.id || user.admin?)
+      end
 
-  # Ver próprio perfil
-  def me?
-    true
-  end
+      # Apagar usuário: só admin
+      def destroy?
+        user.present? && user.admin?
+      end
 
-  # Atualizar perfil (apenas o próprio usuário)
-  def update_profile?
-    record == user
-  end
+      # Confirmação de usuário: liberado para todos (exemplo)
+      def confirm_user?
+        true
+      end
 
-  # Deletar usuário (só admin, e não pode se autodeletar)
-  def destroy?
-    user.admin? && user != record
-  end
+      # Permite atributos editáveis/permitidos
+      def permitted_attributes
+        if user.admin?
+          [:email, :name, :password, :password_confirmation, :role, :admin]
+        else
+          [:email, :name, :password, :password_confirmation]
+        end
+      end
 
-  def permitted_attributes
-    [:name, :email, :password, :password_confirmation]
-  end
-
-  class Scope < Scope
-    # Escopo: admin vê todos, outros não veem ninguém
-    def resolve
-      if user.admin?
-        scope.all
-      else
-        scope.where(user_id: user.id)
+      class Scope < Scope
+        def resolve
+          if user.admin?
+            scope.all
+          else
+            # Usuários normais só veem eles mesmos
+            scope.where(id: user.id)
+          end
       end
     end
-  end
 end

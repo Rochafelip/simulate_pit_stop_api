@@ -14,16 +14,20 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const carsRes = await api.get("/cars");
-        setCars(carsRes.data);
+        setCars(carsRes.data.cars);
 
         const racesRes = await api.get("/races");
-        setRaces(racesRes.data);
+        setRaces(racesRes.data.races);
 
         const tracksRes = await api.get("/tracks");
-        setTracks(tracksRes.data);
+        setTracks(tracksRes.data.tracks);
       } catch (err) {
         console.error("Erro ao carregar dados:", err);
       }
+
+      console.log("carsRes.data:", carsRes.data);
+      console.log("racesRes.data:", racesRes.data);
+      console.log("tracksRes.data:", tracksRes.data);
     };
 
     fetchData();

@@ -1,10 +1,10 @@
 class CarPolicy < ApplicationPolicy
   def index?
-    true # Todos podem listar
+    true
   end
 
   def show?
-    true # Todos podem ver
+    true
   end
 
   def create?
@@ -16,7 +16,7 @@ class CarPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.present?
+    user.admin?
   end
 
   def permitted_attributes
@@ -26,7 +26,7 @@ class CarPolicy < ApplicationPolicy
   # Escopo para filtrar registros
   class Scope < Scope
     def resolve
-      scope.all # Mostra todas as pistas
+      scope.all
     end
   end
 end

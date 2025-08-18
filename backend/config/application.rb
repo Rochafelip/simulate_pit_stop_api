@@ -21,6 +21,6 @@ module SimulatePitStopApi
     config.autoload_lib(ignore: %w[assets tasks])
 
     # Se estiver usando apenas API, ative:
-    # config.api_only = true
+    config.api_only = true
   end
 end

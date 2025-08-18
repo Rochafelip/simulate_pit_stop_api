@@ -1,25 +1,27 @@
 module Api
   module V1
     class TracksController < ApplicationController
-      before_action :authenticate_user!, only: [ :create, :update, :destroy ]
-      before_action :set_track, only: [ :show, :update, :destroy ]
+      before_action :authenticate_api_v1_user!, only: %i[create update destroy]
+      before_action :set_track, only: %i[show update destroy]
+      before_action :ensure_json_request
+
       after_action :verify_authorized, except: :index
       after_action :verify_policy_scoped, only: :index
 
-      # GET /tracks
+      # GET /api/v1/tracks
       def index
         tracks = policy_scope(Track)
         render json: tracks, each_serializer: Api::V1::TrackSerializer, status: :ok
       end
 
-      # GET /tracks/:id
+      # GET /api/v1/tracks/:id
       def show
         authorize @track
         render json: @track, serializer: Api::V1::TrackSerializer, status: :ok
       end
 
-        # POST /tracks
-        def create
+      # POST /api/v1/tracks
+      def create
         @track = Track.new(permitted_attributes(Track))
         authorize @track
 
@@ -30,17 +32,18 @@ module Api
         end
       end
 
-      # PATCH/PUT /tracks/:id
+      # PUT/PATCH /api/v1/tracks/:id
       def update
         authorize @track
-        if @track.update(permitted_attributes(Track))
+
+        if @track.update(permitted_attributes(@track))
           render json: @track, serializer: Api::V1::TrackSerializer, status: :ok
         else
           render json: { errors: @track.errors.full_messages }, status: :unprocessable_entity
         end
       end
 
-      # DELETE /tracks/:id
+      # DELETE /api/v1/tracks/:id
       def destroy
         authorize @track
         @track.destroy
@@ -49,12 +52,16 @@ module Api
 
       private
 
-      def set_track
-        @track = Track.find(params[:id])
+      def ensure_json_request
+        return if request.format.json?
+
+        render body: nil, status: :not_acceptable
       end
 
-      def track_params
-        params.require(:track).permit(:id, :name, :country, :distance, :number_of_curves, :elevation_track, :created_at, :updated_at)
+      def set_track
+        @track = Track.find(params[:id])
+      rescue ActiveRecord::RecordNotFound
+        render json: { error: 'Pista não encontrada' }, status: :not_found
       end
     end
   end
